@@ -24,19 +24,20 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="authSection">
+        <h2>Sign Up / Login</h2>
+        <input type="text" id="username" placeholder="Enter your name">
+        <button onclick="signup()">Sign Up</button>
+        <button onclick="login()">Login</button>
+    </div>
+    
+    <div class="container" id="mainSection" style="display: none;">
         <h2>Earn by Clicking</h2>
         <p>Clicks: <span id="clicks">0</span></p>
         <p>Points: <span id="points">0</span></p>
         <button onclick="earnPoints()">Click to Earn</button>
         <p id="adMessage" style="display: none;">Watch an ad to continue!</p>
         <button id="watchAd" style="display: none;" onclick="watchAd()">Watch Ad</button>
-        <hr>
-        <h3>Sign Up / Login</h3>
-        <input type="text" id="username" placeholder="Enter your name">
-        <button onclick="signup()">Sign Up</button>
-        <button onclick="login()">Login</button>
-        <p id="userDisplay" style="display: none;"></p>
         <hr>
         <h3>Withdraw Earnings</h3>
         <p>Minimum withdrawal: ₹25 (2500 points)</p>
@@ -48,9 +49,37 @@
         let points = 0;
         let username = "";
         
+        function signup() {
+            username = document.getElementById('username').value;
+            if (username.trim() !== "") {
+                alert("Sign Up successful! Welcome, " + username);
+                localStorage.setItem("username", username);
+                localStorage.setItem("points", "0");
+                showMainSection();
+            }
+        }
+        
+        function login() {
+            username = document.getElementById('username').value;
+            if (localStorage.getItem("username") === username) {
+                points = parseFloat(localStorage.getItem("points")) || 0;
+                alert("Login successful! Welcome back, " + username);
+                showMainSection();
+                updateDisplay();
+            } else {
+                alert("User not found. Please sign up first.");
+            }
+        }
+
+        function showMainSection() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('mainSection').style.display = 'block';
+        }
+
         function earnPoints() {
             clicks++;
             points += 1;
+            localStorage.setItem("points", points);
             updateDisplay();
             
             if (clicks % 10 === 0) {
@@ -61,6 +90,7 @@
         
         function watchAd() {
             points += 0.5;
+            localStorage.setItem("points", points);
             document.getElementById('adMessage').style.display = 'none';
             document.getElementById('watchAd').style.display = 'none';
             updateDisplay();
@@ -70,30 +100,6 @@
             document.getElementById('clicks').textContent = clicks;
             document.getElementById('points').textContent = points.toFixed(1);
             document.getElementById('withdrawBtn').disabled = points < 2500;
-        }
-
-        function signup() {
-            username = document.getElementById('username').value;
-            if (username.trim() !== "") {
-                alert("Sign Up successful! Welcome, " + username);
-                localStorage.setItem("username", username);
-                localStorage.setItem("points", points);
-                document.getElementById('userDisplay').textContent = "Logged in as: " + username;
-                document.getElementById('userDisplay').style.display = 'block';
-            }
-        }
-
-        function login() {
-            username = document.getElementById('username').value;
-            if (localStorage.getItem("username") === username) {
-                points = parseFloat(localStorage.getItem("points")) || 0;
-                alert("Login successful! Welcome back, " + username);
-                document.getElementById('userDisplay').textContent = "Logged in as: " + username;
-                document.getElementById('userDisplay').style.display = 'block';
-                updateDisplay();
-            } else {
-                alert("User not found. Please sign up first.");
-            }
         }
 
         function withdraw() {
