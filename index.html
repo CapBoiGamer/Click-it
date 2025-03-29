@@ -32,19 +32,20 @@
         <p id="adMessage" style="display: none;">Watch an ad to continue!</p>
         <button id="watchAd" style="display: none;" onclick="watchAd()">Watch Ad</button>
         <hr>
-        <h3>Account</h3>
+        <h3>Sign Up / Login</h3>
         <p>Username: <input type="text" id="username" placeholder="Enter your name"></p>
+        <button onclick="signup()">Sign Up</button>
         <button onclick="login()">Login</button>
         <p id="userDisplay" style="display: none;"></p>
         <hr>
         <h3>Withdraw Earnings</h3>
+        <p>Minimum withdrawal: ₹25 (2500 points)</p>
         <button onclick="withdraw()" id="withdrawBtn" disabled>Withdraw ₹25</button>
     </div>
 
     <script>
         let clicks = 0;
         let points = 0;
-        let adsWatched = 0;
         let username = "";
         
         function earnPoints() {
@@ -59,7 +60,6 @@
         }
         
         function watchAd() {
-            adsWatched++;
             points += 0.5;
             document.getElementById('adMessage').style.display = 'none';
             document.getElementById('watchAd').style.display = 'none';
@@ -72,9 +72,19 @@
             document.getElementById('withdrawBtn').disabled = points < 2500;
         }
 
+        function signup() {
+            username = document.getElementById('username').value;
+            if (username.trim() !== "") {
+                alert("Sign Up successful!");
+                document.getElementById('userDisplay').textContent = "Logged in as: " + username;
+                document.getElementById('userDisplay').style.display = 'block';
+            }
+        }
+
         function login() {
             username = document.getElementById('username').value;
             if (username.trim() !== "") {
+                alert("Login successful!");
                 document.getElementById('userDisplay').textContent = "Logged in as: " + username;
                 document.getElementById('userDisplay').style.display = 'block';
             }
