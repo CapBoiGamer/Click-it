@@ -33,7 +33,7 @@
         <button id="watchAd" style="display: none;" onclick="watchAd()">Watch Ad</button>
         <hr>
         <h3>Sign Up / Login</h3>
-        <p>Username: <input type="text" id="username" placeholder="Enter your name"></p>
+        <input type="text" id="username" placeholder="Enter your name">
         <button onclick="signup()">Sign Up</button>
         <button onclick="login()">Login</button>
         <p id="userDisplay" style="display: none;"></p>
@@ -75,7 +75,9 @@
         function signup() {
             username = document.getElementById('username').value;
             if (username.trim() !== "") {
-                alert("Sign Up successful!");
+                alert("Sign Up successful! Welcome, " + username);
+                localStorage.setItem("username", username);
+                localStorage.setItem("points", points);
                 document.getElementById('userDisplay').textContent = "Logged in as: " + username;
                 document.getElementById('userDisplay').style.display = 'block';
             }
@@ -83,10 +85,14 @@
 
         function login() {
             username = document.getElementById('username').value;
-            if (username.trim() !== "") {
-                alert("Login successful!");
+            if (localStorage.getItem("username") === username) {
+                points = parseFloat(localStorage.getItem("points")) || 0;
+                alert("Login successful! Welcome back, " + username);
                 document.getElementById('userDisplay').textContent = "Logged in as: " + username;
                 document.getElementById('userDisplay').style.display = 'block';
+                updateDisplay();
+            } else {
+                alert("User not found. Please sign up first.");
             }
         }
 
@@ -94,6 +100,7 @@
             if (points >= 2500) {
                 alert("Withdrawal request sent for ₹25!");
                 points -= 2500;
+                localStorage.setItem("points", points);
                 updateDisplay();
             } else {
                 alert("Not enough points to withdraw.");
