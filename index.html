@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earn by Clicking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            margin: 50px auto;
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Earn by Clicking</h2>
+        <p>Clicks: <span id="clicks">0</span></p>
+        <p>Points: <span id="points">0</span></p>
+        <button onclick="earnPoints()">Click to Earn</button>
+        <p id="adMessage" style="display: none;">Watch an ad to continue!</p>
+        <button id="watchAd" style="display: none;" onclick="watchAd()">Watch Ad</button>
+    </div>
+
+    <script>
+        let clicks = 0;
+        let points = 0;
+        let adsWatched = 0;
+        
+        function earnPoints() {
+            if (clicks % 10 === 0 && clicks !== 0) {
+                document.getElementById('adMessage').style.display = 'block';
+                document.getElementById('watchAd').style.display = 'block';
+            } else {
+                clicks++;
+                points += 1;
+                updateDisplay();
+            }
+        }
+        
+        function watchAd() {
+            adsWatched++;
+            points += 0.5;
+            document.getElementById('adMessage').style.display = 'none';
+            document.getElementById('watchAd').style.display = 'none';
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            document.getElementById('clicks').textContent = clicks;
+            document.getElementById('points').textContent = points.toFixed(1);
+        }
+    </script>
+</body>
+</html>
