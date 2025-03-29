@@ -31,21 +31,30 @@
         <button onclick="earnPoints()">Click to Earn</button>
         <p id="adMessage" style="display: none;">Watch an ad to continue!</p>
         <button id="watchAd" style="display: none;" onclick="watchAd()">Watch Ad</button>
+        <hr>
+        <h3>Account</h3>
+        <p>Username: <input type="text" id="username" placeholder="Enter your name"></p>
+        <button onclick="login()">Login</button>
+        <p id="userDisplay" style="display: none;"></p>
+        <hr>
+        <h3>Withdraw Earnings</h3>
+        <button onclick="withdraw()" id="withdrawBtn" disabled>Withdraw ₹25</button>
     </div>
 
     <script>
         let clicks = 0;
         let points = 0;
         let adsWatched = 0;
+        let username = "";
         
         function earnPoints() {
-            if (clicks % 10 === 0 && clicks !== 0) {
+            clicks++;
+            points += 1;
+            updateDisplay();
+            
+            if (clicks % 10 === 0) {
                 document.getElementById('adMessage').style.display = 'block';
                 document.getElementById('watchAd').style.display = 'block';
-            } else {
-                clicks++;
-                points += 1;
-                updateDisplay();
             }
         }
         
@@ -60,6 +69,25 @@
         function updateDisplay() {
             document.getElementById('clicks').textContent = clicks;
             document.getElementById('points').textContent = points.toFixed(1);
+            document.getElementById('withdrawBtn').disabled = points < 2500;
+        }
+
+        function login() {
+            username = document.getElementById('username').value;
+            if (username.trim() !== "") {
+                document.getElementById('userDisplay').textContent = "Logged in as: " + username;
+                document.getElementById('userDisplay').style.display = 'block';
+            }
+        }
+
+        function withdraw() {
+            if (points >= 2500) {
+                alert("Withdrawal request sent for ₹25!");
+                points -= 2500;
+                updateDisplay();
+            } else {
+                alert("Not enough points to withdraw.");
+            }
         }
     </script>
 </body>
